@@ -3,7 +3,6 @@ require('../src/database.php');
 require('../src/user.php');
 require('../view/header.php');
 require('../view/navbar.php');
-require('../view/SignInForm.php');
 
 
 // Déclaration des regex
@@ -24,7 +23,7 @@ if (isset($_POST['signIn'])) {
         //test de la regex si elle est invalide
         if (!preg_match($regexUsername, $newUser->username)) {
             // Si le champ n'est pas valide, stocker dans le tableau le rapport d'érreur
-            $formErrorSignIn['usernameSignIn'] = 'Le champ usernamenyme est incorrect';
+            $formErrorSignIn['usernameSignIn'] = 'Le champ username est incorrect';
         }
         // verifie si le champs usernameSignIn et vide
         if (empty($newUser->username)) {
@@ -33,16 +32,20 @@ if (isset($_POST['signIn'])) {
         }
     }
     // meme chose pour password
-    if(!empty($_POST['passwordSignIn']) && !empty($_POST['passwordConfirm']) && $_POST['passwordSignIn'] == $_POST['passwordConfirm']) {
+    if(!empty($_POST['passwordSignIn']) && !empty($_POST['passwordConfirm']) && $_POST['passwordSignIn'] === $_POST['passwordConfirm']) {
         $newUser->password = htmlspecialchars($_POST['passwordSignIn']);
         if (!preg_match($regexPasse, $newUser->password)) {
             $formErrorSignIn['passwordSignIn'] = 'Le champ mot de passe est incorrect';
         }
         $newUser->password =  password_hash($_POST['passwordSignIn'], PASSWORD_DEFAULT);
-        if (empty($newUser->password)) {
-            $formErrorSignIn['passwordSignIn'] = 'Champ requis.';
-        }
     }
+    if (empty($_POST['passwordSignIn'])) {
+        $formErrorSignIn['passwordSignIn'] = 'Champ requis.';
+    }
+    if (empty($_POST['passwordConfirm'])) {
+        $formErrorSignIn['passwordSignIn'] = 'Champ requis.';
+    }
+
     // meme chose pour email
     if (isset($_POST['email'])) {
         $newUser->email = htmlspecialchars($_POST['email']);
@@ -58,7 +61,7 @@ if (isset($_POST['signIn'])) {
         $check = $newUser->checkIfUserExist();
         if ($check == '0') {
             if (!$newUser->newUser()) {
-                $formError['submit'] = 'Il y a eu un problème';
+                $formErrorSignIn['submit'] = 'Il y a eu un problème';
             }
         } else if ($check === FALSE) {
             $formErrorSignIn['submit'] = 'Il y a eu un problème';
@@ -67,4 +70,6 @@ if (isset($_POST['signIn'])) {
         }
     }
 }
+
+require('../view/SignInForm.php');
 ?>

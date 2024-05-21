@@ -19,4 +19,5 @@
 5. Cree une liste de pays et Pouvoir dire que l'on a visité ce pays + ajouter un commentaire.
 6. Pouvoir faire une recherche sur un pays et pouvoir visionné le nombre de personne l'ayant visité et regarder les commentaires.
 
-Etc
+OPtimisation : 
+- regex mdp pour faire une jauge (faible, moyen, fort)

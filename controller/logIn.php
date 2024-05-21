@@ -3,7 +3,7 @@ require('../src/database.php');
 require('../src/user.php');
 require('../view/header.php');
 require('../view/navbar.php');
-require('../view/logInForm.php');
+
 
 // Déclaration des regex
 $regexUsername = '/^[0-9A-z]+$/';
@@ -19,7 +19,7 @@ if (isset($_POST['logIn'])) {
             //test de la regex si elle est invalide
             if (!preg_match($regexUsername, $username)) {
                 // Si le champ n'est pas valide, stocker dans le tableau le rapport d'érreur
-                $formErrorConnect['username'] = 'Le champ usernamenyme est incorrect';
+                $formErrorConnect['username'] = 'Le champ username est incorrect';
             }
             // verifie si le champs de nom et vide
             if (empty($username)) {
@@ -63,4 +63,6 @@ if (isset($_POST['logIn'])) {
             }
         }
     };
+
+    require('../view/logInForm.php');
 ?>
