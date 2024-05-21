@@ -1,17 +1,19 @@
 <?php
+//Déclaration de la classe user qui utilise la classe database
+class user extends database
+{
 
-class user extends database {
-
-// Liste des attributs
+    // Liste des attributs
     public $id;
     public $username;
     public $password;
     public $email;
 
-    public function newUser() {
+    public function newUser()
+    {
         //Déclaration de la requête SQL qui permet de stocker les données d'inscription dans la base de donnée
         $request = 'INSERT INTO `user` (`username`, `password`, `email`) '
-                . 'VALUES ( :username, :password, :email)';
+            . 'VALUES ( :username, :password, :email)';
         // Préparation de la requête SQL pour éviter les injections SQL
         $newUser = $this->db->prepare($request);
         // Remplacement des marqueurs nominatif
@@ -27,16 +29,13 @@ class user extends database {
         }
     }
 
-    public function checkIfUserExist() {
-        //Déclaration de la requête SQL qui permet de vérifier si un utilisateur est déja présent ou non dans la base de donnée
+    public function checkIfUserExist()
+    {
         $request = 'SELECT COUNT(`id`) AS `count` FROM `user`'
-                . ' WHERE `username` = :username OR `email` = :email';
-        // Préparation de la requête SQL pour éviter les injections SQL
+            . ' WHERE `username` = :username OR `email` = :email';
         $check = $this->db->prepare($request);
-        // Remplacement des marqueurs nominatif
         $check->bindValue(':username', $this->username, PDO::PARAM_STR);
         $check->bindValue(':email', $this->email, PDO::PARAM_STR);
-        // Si la requête c'est éxécuté , récupére un booléan 
         if ($check->execute()) {
             $result = $check->fetch(PDO::FETCH_OBJ);
             $bool = $result->count;
@@ -46,5 +45,54 @@ class user extends database {
         }
         // Retourne bool et stop la fonction
         return $bool;
+    }
+
+    public function showUser()
+    {
+        $request = 'SELECT `user`.`id`, `user`.`username`, `user`.`email` '
+            . 'FROM `user` ';
+        $showUser = $this->db->prepare($request);
+        if ($showUser->execute()) {
+            return $showUser->fetchAll(PDO::FETCH_OBJ);
+        }
+    }
+
+    public function userById()
+    {
+        $request = 'SELECT `user`.`id`, `user`.`username`, `user`.`email`, `user`.`password` '
+            . 'FROM `user` '
+            . 'WHERE `user`.`id` = :id ';
+        $userId = $this->db->prepare($request);
+        $userId->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $userId->execute();
+        if (is_object($userId)) {
+            // Stocke la requête dans $userId / fetchAll = va chercher tous les résultat / FETCH_OBJ = un tableau d'objet
+            $isObjectResult = $userId->fetch(PDO::FETCH_OBJ);
+        }
+        // Retourne $PDOResult
+        return $isObjectResult;
+    }
+
+    public function userConnection()
+    {
+        $state = false;
+        $request = 'SELECT `user`.`id`, `user`.`username`, `user`.`password`, `user`.`email` '
+            . 'FROM `user` '
+            . 'WHERE `user`.`username` = :username';
+        $result = $this->db->prepare($request);
+        $result->bindValue(':username', $this->username, PDO::PARAM_STR);
+        if ($result->execute()) {
+            $selectResult = $result->fetch(PDO::FETCH_OBJ);
+            //On vérifie que l'on a bien trouvé un utilisateur
+            if (is_object($selectResult)) {
+                // On hydrate
+                $this->username = $selectResult->username;
+                $this->password = $selectResult->password;
+                $this->email = $selectResult->email;
+                $this->id = $selectResult->id;
+                $state = true;
+            }
+        }
+        return $state;
     }
 }

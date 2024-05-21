@@ -1,6 +1,9 @@
 <?php
+
+//déclaration de la classe database
 class database
 {
+    //déclaration des variables que l'on va utiliser pour la fuonction construct
     protected $db;
     private $serverName = 'localhost';
     private $databaseName = 'iwashere';
