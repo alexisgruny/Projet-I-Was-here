@@ -27,7 +27,7 @@
             
             <!-- Submit -->
             <button class="btn btn-primary btn-md" type="submit" name="signIn">S'inscrire</button>
-            <p class=""><?= isset($formErrorSignIn['execute']) ? $formErrorSignIn['execute'] : ''; ?></p>
+            <p class=""><?= isset($formErrorSignIn['submit']) ? $formErrorSignIn['submit'] : ''; ?></p>
         </form>
         <!-- Fin du formulaire d'inscription -->
     </div>

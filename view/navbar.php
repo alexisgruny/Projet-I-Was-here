@@ -17,16 +17,12 @@
             <!-- Bouton connexion/inscription , si connecté affiche un bouton déconnexion -->
             <li class="nav-item">
               <?php if (isset($_SESSION['isConnect']) == true) { ?>
-                <a class="nav-link mt-1 mr-5" href="../controller/disconnect.php">Déconnexion</a>
+                <a class="nav-link mt-1 mr-5" href="/controller/profil.php">Profile</a>
+                <a class="nav-link mt-1 mr-5" href="/controller/disconnect.php">Déconnexion</a>
               <?php } else { ?>
                 <a class="nav-link mt-1 mr-5" href="/controller/logIn.php">Connexion</a>
+                <a class="nav-link mt-1 mr-5" href="/controller/signIn.php">Inscription</a>
               <?php } ?>
-              <?php if (isset($_SESSION['isConnect']) == false) { ?>
-            <a class="nav-link mt-1 mr-5" href="../controller/signIn.php">Inscription</a>
-          <?php } ?>
-            <?php if (isset($_SESSION['isConnect']) == true) { ?>
-              <a class="nav-link mt-1 mr-5" href="../controller/profil.php">Profile</a>
-            <?php } ?>
           </ul>
         </div>
       </div>

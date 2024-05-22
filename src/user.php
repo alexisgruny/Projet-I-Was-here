@@ -98,4 +98,25 @@ class user extends database
         }
         return $state;
     }
+
+    public function modifyUser() {
+        //Déclaration de la requête SQL qui permet de modifier un utilisateur
+        $request = 'UPDATE `user` '
+                . 'SET `username` = :username, `password` = :password, `email` = :email '
+                . 'WHERE `id` = :id ';
+        // Prépare la requéte SQL pour éviter les injections 
+        $modify = $this->db->prepare($request);
+        // Remplacement des marqueurs nominatif
+        $modify->bindValue(':username', $this->username);
+        $modify->bindValue(':password', $this->password);
+        $modify->bindValue(':email', $this->email);
+        $modify->bindValue(':id', $this->id);
+        // Execution de la requête 
+        if ($modify->execute()) {
+            return;
+        } else {
+            // Si la requête ne c'est pas éxécuté on stock un message d'érreur dans le tableau d'érreur pour informer l'utilisateur
+            $formErrorModify['modify'] = 'une erreur dans le processus de modification';
+        }
+    }
 }
