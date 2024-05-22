@@ -8,24 +8,27 @@ class user extends database
     public $username;
     public $password;
     public $email;
+    public $creationDate;
 
     public function newUser()
     {
         //Déclaration de la requête SQL qui permet de stocker les données d'inscription dans la base de donnée
-        $request = 'INSERT INTO `user` (`username`, `password`, `email`) '
-            . 'VALUES ( :username, :password, :email)';
+        $request = 'INSERT INTO `user` (`username`, `password`, `email`, `creationDate`) '
+            . 'VALUES ( :username, :password, :email, :creationDate)';
         // Préparation de la requête SQL pour éviter les injections SQL
         $newUser = $this->db->prepare($request);
         // Remplacement des marqueurs nominatif
         $newUser->bindValue(':username', $this->username, PDO::PARAM_STR);
         $newUser->bindValue(':password', $this->password, PDO::PARAM_STR);
         $newUser->bindValue(':email', $this->email, PDO::PARAM_STR);
+        $newUser->bindValue(':creationDate', $this->creationDate, PDO::PARAM_STR);
         // Si la requête c'est éxécuté on termine la fonction 
         if ($newUser->execute()) {
             return;
+            echo 'execute';
         } else {
             // Si la requête ne c'est pas éxécuté on stock un message d'érreur dans le tableau d'érreur pour informer l'utilisateur
-            $formError['execute'] = 'une erreur dans le processus d\'inscription';
+            $formErrorSignIn['execute'] = 'une erreur dans le processus d\'inscription';
         }
     }
 

@@ -7,12 +7,12 @@
             
             <!-- username -->
             <label for="usernameSignIn">nom de compte</label>
-            <input  placeholder="username" id="usernameSignIn" type="text" name="usernameSignIn" value="<?= isset($newUser->usernameSignIn) ? $newUser->usernameSignIn : '' ?>" />
+            <input  placeholder="username" id="usernameSignIn" type="text" name="usernameSignIn" value="<?= isset($newUser->username) ? $newUser->username : '' ?>" />
             <p class=""><?= isset($formErrorSignIn['usernameSignIn']) ? $formErrorSignIn['usernameSignIn'] : ''; ?></p>
             
             <!-- Password -->
             <label for="passwordSignIn">Mot de passe</label>
-            <input placeholder="********" id="passwordSignIn" type="password" name="passwordSignIn" value="<?= isset($newUser->passwordSignIn) ? $newUser->passwordSignIn : '' ?>" />
+            <input placeholder="********" id="passwordSignIn" type="password" name="passwordSignIn" value="" />
             <p class=""><?= isset($formErrorSignIn['passwordSignIn']) ? $formErrorSignIn['passwordSignIn'] : ''; ?></p>
             
             <!-- PasswordConfirm -->
@@ -27,6 +27,7 @@
             
             <!-- Submit -->
             <button class="btn btn-primary btn-md" type="submit" name="signIn">S'inscrire</button>
+            <p class=""><?= isset($formErrorSignIn['execute']) ? $formErrorSignIn['execute'] : ''; ?></p>
         </form>
         <!-- Fin du formulaire d'inscription -->
     </div>

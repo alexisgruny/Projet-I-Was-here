@@ -8,7 +8,7 @@ class database
     private $serverName = 'localhost';
     private $databaseName = 'iwashere';
     private $username = 'IWasHere';
-    private $password = 'IWasHereDB0103!';
+    private $password = 'IWasHereDB0103!'; 
     function __construct()
     {
         try {

@@ -15,8 +15,8 @@ $formErrorSignIn = array();
 if (isset($_POST['signIn'])) {
     // Instanciation de la classe user
     $newUser = NEW user();
-
-    
+    $newUser->creationDate = date('Y/m/d');
+   
     if (isset($_POST['usernameSignIn'])) {
         //déclarion de la variable usernameSignIn avec le htmlspecialchar qui change l'interprétation des balises par le code
         $newUser->username = htmlspecialchars($_POST['usernameSignIn']);
@@ -31,6 +31,7 @@ if (isset($_POST['signIn'])) {
             $formErrorSignIn['usernameSignIn'] = 'Champ requis.';
         }
     }
+    
     // meme chose pour password
     if(!empty($_POST['passwordSignIn']) && !empty($_POST['passwordConfirm']) && $_POST['passwordSignIn'] === $_POST['passwordConfirm']) {
         $newUser->password = htmlspecialchars($_POST['passwordSignIn']);
@@ -43,7 +44,7 @@ if (isset($_POST['signIn'])) {
         $formErrorSignIn['passwordSignIn'] = 'Champ requis.';
     }
     if (empty($_POST['passwordConfirm'])) {
-        $formErrorSignIn['passwordSignIn'] = 'Champ requis.';
+        $formErrorSignIn['passwordConfirm'] = 'Champ requis.';
     }
 
     // meme chose pour email
@@ -69,6 +70,8 @@ if (isset($_POST['signIn'])) {
             $formErrorSignIn['submit'] = 'Ce profile existe déja';
         }
     }
+    var_dump($formErrorSignIn);
+    var_dump($newUser);
 }
 
 require('../view/SignInForm.php');
