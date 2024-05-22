@@ -17,14 +17,14 @@ if (isset($_POST['modify'])) {
         if (isset($_POST['username'])) {
             $modifyUser->username = htmlspecialchars($_POST['username']);
             if (!preg_match($regexusernamenyme, $modifyUser->username)) {
-                $formErrorModify['username'] = 'Le champ usernamenyme est incorrect';
+                $formErrorModify['username'] = 'Le champ username est incorrect';
             }
             if (empty($modifyUser->username)) {
                 $formErrorModify['username'] = 'Champ requis.';
             }
         }
-        if (!empty($_POST['Password']) && !empty($_POST['passwordConfirm']) && $_POST['Password'] == $_POST['passwordConfirm']) {
-            $modifyUser->password = htmlspecialchars($_POST['password']);
+        if (!empty($_POST['newPassword']) && !empty($_POST['passwordConfirm']) && $_POST['Password'] == $_POST['passwordConfirm']) {
+            $modifyUser->password = htmlspecialchars($_POST['newPassword']);
             if (!preg_match($regexPasse, $modifyUser->password)) {
                 $formErrorModify['password'] = 'Le champ mot de passe est incorrect';
             }
