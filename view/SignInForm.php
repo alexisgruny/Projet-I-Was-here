@@ -8,26 +8,26 @@
             <!-- username -->
             <label for="usernameSignIn">nom de compte</label>
             <input  placeholder="username" id="usernameSignIn" type="text" name="usernameSignIn" value="<?= isset($newUser->username) ? $newUser->username : '' ?>" />
-            <p class=""><?= isset($formErrorSignIn['usernameSignIn']) ? $formErrorSignIn['usernameSignIn'] : ''; ?></p>
+            <p class=""><?= isset($formError['usernameSignIn']) ? $formError['usernameSignIn'] : ''; ?></p>
             
             <!-- Password -->
             <label for="passwordSignIn">Mot de passe</label>
             <input placeholder="********" id="passwordSignIn" type="password" name="passwordSignIn" value="" />
-            <p class=""><?= isset($formErrorSignIn['passwordSignIn']) ? $formErrorSignIn['passwordSignIn'] : ''; ?></p>
+            <p class=""><?= isset($formError['passwordSignIn']) ? $formError['passwordSignIn'] : ''; ?></p>
             
             <!-- PasswordConfirm -->
-            <label for="passwordConfirm">Confirmation mot de passe</label>
-            <input  placeholder="********" id="passwordConfirm" type="password" name="passwordConfirm" value="<?= isset($newUser->passwordConfirm) ? $newUser->passwordConfirm : '' ?>" />
-            <p class=""><?= isset($formErrorSignIn['passwordConfirm']) ? $formErrorSignIn['passwordConfirm'] : ''; ?></p>
+            <label for="passwordSignInConfirm">Confirmation mot de passe</label>
+            <input  placeholder="********" id="passwordSignInConfirm" type="password" name="passwordSignInConfirm" value="<?= isset($newUser->passwordConfirm) ? $newUser->passwordConfirm : '' ?>" />
+            <p class=""><?= isset($formError['passwordSignInConfirm']) ? $formError['passwordSignInConfirm'] : ''; ?></p>
             
             <!-- Email -->
-            <label for="email">E-mail</label>
-            <input placeholder="Something@else.kek" id="email" type="text" name="email" value="<?= isset($newUser->email) ? $newUser->email : '' ?>" />
-            <p class=""><?= isset($formErrorSignIn['email']) ? $formErrorSignIn['email'] : ''; ?></p>
+            <label for="emailSignIn">E-mail</label>
+            <input placeholder="Something@else.kek" id="emailSignIn" type="text" name="emailSignIn" value="<?= isset($newUser->email) ? $newUser->email : '' ?>" />
+            <p class=""><?= isset($formError['emailSignIn']) ? $formError['emailSignIn'] : ''; ?></p>
             
             <!-- Submit -->
-            <button class="btn btn-primary btn-md" type="submit" name="signIn">S'inscrire</button>
-            <p class=""><?= isset($formErrorSignIn['submit']) ? $formErrorSignIn['submit'] : ''; ?></p>
+            <button class="" type="submit" name="signIn">S'inscrire</button>
+            <p class=""><?= isset($formError['submit']) ? $formError['submit'] : ''; ?></p>
         </form>
         <!-- Fin du formulaire d'inscription -->
     </div>

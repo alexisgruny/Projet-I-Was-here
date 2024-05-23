@@ -6,19 +6,19 @@
 
             <!-- username -->
             <i class=""></i>
-            <label for="username" class="">Username</label>
-            <input class="" placeholder="username" id="username" type="text" name="username" value="<?= isset($username) ? $username : '' ?>" />
-            <p class=""><?= isset($formErrorConnect['username']) ? $formErrorConnect['username'] : ''; ?></p>
+            <label for="usernameLogIn" class="">Username</label>
+            <input class="" placeholder="username" id="usernameLogIn" type="text" name="usernameLogIn" value="<?= isset($username) ? $username : '' ?>" />
+            <p class=""><?= isset($formError['usernameLogIn']) ? $formError['usernameLogIn'] : ''; ?></p>
 
             <!-- Password -->
             <i class=""></i>
-            <label for="password" class="">Mot de passe</label>
-            <input class="" placeholder="********" id="password" type="password" name="password" value="<?= isset($password) ? $password : '' ?>" />
-            <p class=""><?= isset($formErrorConnect['password']) ? $formErrorConnect['password'] : ''; ?></p>
+            <label for="passwordLogIn" class="">Mot de passe</label>
+            <input class="" placeholder="********" id="passwordLogIn" type="password" name="passwordLogIn" value="<?= isset($password) ? $password : '' ?>" />
+            <p class=""><?= isset($formError['passwordLogIn']) ? $formError['passwordLogIn'] : ''; ?></p>
 
             <!-- Input Submit -->
             <button class="" type="submit" name="logIn">Se connecter</button>
-            <p class=""><?= isset($formErrorConnect['error']) ? $formErrorConnect['error'] : '' ?></p>
+            <p class=""><?= isset($formError['error']) ? $formError['error'] : '' ?></p>
         </form>
     </div>
 </body>

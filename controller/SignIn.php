@@ -4,73 +4,56 @@ require('../src/user.php');
 require('../view/header.php');
 require('../view/navbar.php');
 
-
 // Déclaration des regex
-$regexUsername = '/^[0-9A-z]+$/';
-$regexPasse = '/^[0-9A-z]+$/';
-$regexMail = '/^[A-z0-9._%+-]+[\@]{1}[A-z0-9.-]+[\.]{1}[A-z]{2,4}$/';
+define('REGEX_username', '/^[A-Za-z0-9_-]{3,20}$/');
+define('REGEX_PASSWORD', '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/');
+define('REGEX_EMAIL', '/^[A-z0-9._%+-]+@[A-z0-9.-]+\.[A-z]{2,4}$/');
+
 // Déclaration des tableaux d'érreur
-$formErrorSignIn = array();
+$formError = array();
+// Instanciation de la classe user
+$newUser = new user();
 
 if (isset($_POST['signIn'])) {
-    // Instanciation de la classe user
-    $newUser = NEW user();
-    $newUser->creationDate = date('Y/m/d');
-   
-    if (isset($_POST['usernameSignIn'])) {
-        //déclarion de la variable usernameSignIn avec le htmlspecialchar qui change l'interprétation des balises par le code
-        $newUser->username = htmlspecialchars($_POST['usernameSignIn']);
-        //test de la regex si elle est invalide
-        if (!preg_match($regexUsername, $newUser->username)) {
-            // Si le champ n'est pas valide, stocker dans le tableau le rapport d'érreur
-            $formErrorSignIn['usernameSignIn'] = 'Le champ username est incorrect';
+    $form = ['usernameSignIn', 'passwordSignIn', 'passwordSignInConfirm', 'emailSignIn'];
+    foreach ($form as $form) {
+        if (empty($_POST[$form])) {
+            $formError[$form] = 'Champs vide';
         }
-        // verifie si le champs usernameSignIn et vide
-        if (empty($newUser->username)) {
-            //stocker dans le tableau le rapport d'érreur
-            $formErrorSignIn['usernameSignIn'] = 'Champ requis.';
-        }
-    }
-    
-    // meme chose pour password
-    if(!empty($_POST['passwordSignIn']) && !empty($_POST['passwordConfirm']) && $_POST['passwordSignIn'] === $_POST['passwordConfirm']) {
-        $newUser->password = htmlspecialchars($_POST['passwordSignIn']);
-        if (!preg_match($regexPasse, $newUser->password)) {
-            $formErrorSignIn['passwordSignIn'] = 'Le champ mot de passe est incorrect';
-        }
-        $newUser->password =  password_hash($_POST['passwordSignIn'], PASSWORD_DEFAULT);
-    }
-    if (empty($_POST['passwordSignIn'])) {
-        $formErrorSignIn['passwordSignIn'] = 'Champ requis.';
-    }
-    if (empty($_POST['passwordConfirm'])) {
-        $formErrorSignIn['passwordConfirm'] = 'Champ requis.';
     }
 
-    // meme chose pour email
-    if (isset($_POST['email'])) {
-        $newUser->email = htmlspecialchars($_POST['email']);
-        if (!FILTER_VAR($newUser->email, FILTER_VALIDATE_EMAIL)) {
-            $formErrorSignIn['email'] = 'Le champ email est incorrect.';
-        }
-        if (empty($newUser->email)) {
-            $formErrorSignIn['email'] = 'Champ requis.';
-        }
-    }
-    // Test si l'utilisateur n'existe pas déja
-    if (count($formErrorSignIn) == 0) {
-        $check = $newUser->checkIfUserExist();
-        if ($check == '0') {
-            if (!$newUser->newUser()) {
-                $formErrorSignIn['submit'] = 'Il y a eu un problème';
+    if (count($formError) == 0) {
+        // Date de creation
+        $newUser->creationDate = date('Y/m/d');
+        // Validation des nouveaux mots de passe
+        if ($_POST['passwordSignIn'] == $_POST['passwordSignInConfirm']) {
+            if (!preg_match(REGEX_PASSWORD, $_POST['passwordSignIn'])) {
+                $formError['passwordSignIn'] = 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et être d\'au moins 8 caractères.';
+            } else {
+                $newUser->password = password_hash($_POST['passwordSignIn'], PASSWORD_DEFAULT);
             }
-        } else if ($check === FALSE) {
-            $formErrorSignIn['submit'] = 'Il y a eu un problème';
+            // Validation du nom d'utilisateur
+            if (!preg_match(REGEX_username, $_POST['usernameSignIn'])) {
+                $formError['usernameSignIn'] = 'Le nom d\'utilisateur doit contenir entre 3 et 20 caractères et ne peut contenir que des lettres, des chiffres, des tirets et des underscores.';
+            } else {
+                $newUser->username = htmlspecialchars($_POST['usernameSignIn']);
+            }
+
+            // Validation de l'email
+            if (!preg_match(REGEX_EMAIL, $_POST['emailSignIn'])) {
+                $formError['emailSignIn'] = 'Le champ email est incorrect';
+            } else {
+                $newUser->email = htmlspecialchars($_POST['emailSignIn']);
+            }
+            // Si aucune erreur, mise à jour de l'utilisateur
+            if (count($formError) == 0) {
+                $newUser->newUser();
+                $formError['success'] = "Modification avec succès!";
+            }
         } else {
-            $formErrorSignIn['submit'] = 'Ce profile existe déja';
+            $formError['passwordConfirm'] = 'Les mots de passe ne correspondent pas';
         }
     }
 }
 
 require('../view/SignInForm.php');
-?>
