@@ -18,5 +18,5 @@
     </form>
     </div>
 </div>
+<scipt src="/assets/script/signIn.js"></scipt>
 </body>
-</html>

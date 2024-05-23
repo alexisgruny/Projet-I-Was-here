@@ -11,5 +11,5 @@
         <button type="submit" name="logIn">Connexion</button>
     </form>
 </div>
-<script src="/assets/script/LogIn.js"></script>
+<script src="/assets/script/logIn.js"></script>
 </body>
