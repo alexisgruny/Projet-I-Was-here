@@ -4,56 +4,41 @@ require('../src/user.php');
 require('../view/header.php');
 require('../view/navbar.php');
 
-// Déclaration des regex
-define('REGEX_username', '/^[A-Za-z0-9_-]{3,20}$/');
-define('REGEX_PASSWORD', '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/');
-define('REGEX_EMAIL', '/^[A-z0-9._%+-]+@[A-z0-9.-]+\.[A-z]{2,4}$/');
-
-// Déclaration des tableaux d'érreur
 $formError = array();
-// Instanciation de la classe user
-$newUser = new user();
 
-if (isset($_POST['signIn'])) {
-    $form = ['usernameSignIn', 'passwordSignIn', 'passwordSignInConfirm', 'emailSignIn'];
-    foreach ($form as $form) {
-        if (empty($_POST[$form])) {
-            $formError[$form] = 'Champs vide';
+if (isset($_POST['logIn'])) {
+    $fields = ['usernameLogIn', 'passwordLogIn'];
+    foreach ($fields as $field) {
+        if (empty($_POST[$field])) {
+            $formError[$field] = 'Champs vide';
         }
     }
 
     if (count($formError) == 0) {
-        // Date de creation
-        $newUser->creationDate = date('Y/m/d');
-        // Validation des nouveaux mots de passe
-        if ($_POST['passwordSignIn'] == $_POST['passwordSignInConfirm']) {
-            if (!preg_match(REGEX_PASSWORD, $_POST['passwordSignIn'])) {
-                $formError['passwordSignIn'] = 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et être d\'au moins 8 caractères.';
-            } else {
-                $newUser->password = password_hash($_POST['passwordSignIn'], PASSWORD_DEFAULT);
-            }
-            // Validation du nom d'utilisateur
-            if (!preg_match(REGEX_username, $_POST['usernameSignIn'])) {
-                $formError['usernameSignIn'] = 'Le nom d\'utilisateur doit contenir entre 3 et 20 caractères et ne peut contenir que des lettres, des chiffres, des tirets et des underscores.';
-            } else {
-                $newUser->username = htmlspecialchars($_POST['usernameSignIn']);
-            }
+        // Instanciation de la classe user
+        $user = new user();
+        $user->username = htmlspecialchars($_POST['usernameLogIn']);
 
-            // Validation de l'email
-            if (!preg_match(REGEX_EMAIL, $_POST['emailSignIn'])) {
-                $formError['emailSignIn'] = 'Le champ email est incorrect';
+        // Appel de la méthode userConnection
+        if ($user->userConnection()) {
+            if (password_verify($_POST['passwordLogIn'], $user->password)) {
+                // La connexion est réussie
+                session_start();
+                $_SESSION['username'] = $user->username;
+                $_SESSION['id'] = $user->id;
+                $_SESSION['email'] = $user->email;
+                $_SESSION['isConnect'] = true;
+
+                // Redirection vers la page du profil de l'utilisateur
+                header('Location: ../controller/profil.php');
+                exit();
             } else {
-                $newUser->email = htmlspecialchars($_POST['emailSignIn']);
-            }
-            // Si aucune erreur, mise à jour de l'utilisateur
-            if (count($formError) == 0) {
-                $newUser->newUser();
-                $formError['success'] = "Modification avec succès!";
+                $formError['error'] = 'Mauvais nom de compte ou mot de passe';
             }
         } else {
-            $formError['passwordConfirm'] = 'Les mots de passe ne correspondent pas';
+            $formError['error'] = 'Erreur de connexion';
         }
     }
 }
 
-require('../view/SignInForm.php');
+require('../view/logInForm.php');
