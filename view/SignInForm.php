@@ -1,7 +1,6 @@
-<div class="container-fluid">   
-        
-        <!-- Formulaire d'inscription-->
-        <form id="signInForm" method="post" action="">
+<div class="container-fluid">
+    <!-- Formulaire d'inscription-->
+    <form id="signInForm" method="post" action="">
         <label for="usernameSignIn">Nom d'utilisateur:</label>
         <input type="text" id="usernameSignIn" name="usernameSignIn" required>
         <br>
@@ -16,7 +15,6 @@
         <br>
         <button type="submit" name="signIn">Inscription</button>
     </form>
-    </div>
 </div>
-<scipt src="/assets/script/signIn.js"></scipt>
+<script src="/assets/script/signIn.js"></script>
 </body>
