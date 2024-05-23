@@ -70,8 +70,6 @@ if (isset($_POST['signIn'])) {
             $formErrorSignIn['submit'] = 'Ce profile existe déja';
         }
     }
-    var_dump($formErrorSignIn);
-    var_dump($newUser);
 }
 
 require('../view/SignInForm.php');
