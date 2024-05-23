@@ -63,3 +63,4 @@ if (isset($_POST['modify'])) {
     }
 }
 require('../view/userModifyForm.php');
+require('../view/footer.php');

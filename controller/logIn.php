@@ -41,3 +41,4 @@ if (isset($_POST['logIn'])) {
 };
 
 require('../view/logInForm.php');
+require('../view/footer.php');

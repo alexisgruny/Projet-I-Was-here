@@ -57,3 +57,4 @@ if (isset($_POST['signIn'])) {
 }
 
 require('../view/SignInForm.php');
+require('../view/footer.php');
