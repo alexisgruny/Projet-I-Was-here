@@ -35,7 +35,7 @@ if (isset($_POST['logIn'])) {
                 $formError['error'] = 'Mauvais nom de compte ou de mot de passe';
             }
         } else {
-            $formError['error'] = 'Erreur de connexion';
+            $formError['error'] = 'Mauvais nom de compte ou de mot de passe';
         }
     }
 };

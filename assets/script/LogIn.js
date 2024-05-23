@@ -21,15 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
             error.textContent = "Le champ mot de passe est vide.";
             errorMessages.appendChild(error);
         }
-
-        // Example of additional validation: minimum password length
-        if (password.value.length < 8) {
-            valid = false;
-            const error = document.createElement("p");
-            error.textContent = "Le mot de passe doit contenir au moins 8 caractères.";
-            errorMessages.appendChild(error);
-        }
-
+        
         if (!valid) {
             event.preventDefault(); // Prevent form submission if validation fails
         }
