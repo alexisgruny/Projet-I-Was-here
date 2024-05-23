@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.getElementById("signInForm");
     const errorMessages = document.getElementById("errorMessages");
-
+  
     form.addEventListener("submit", function(event) {
         let valid = true;
         errorMessages.innerHTML = ""; // Clear previous error messages
@@ -51,13 +51,5 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!valid) {
             event.preventDefault(); // Prevent form submission if validation fails
         }
-    });
-
-    // Clear PHP error messages on input focus
-    const inputs = document.querySelectorAll("#signInForm input");
-    inputs.forEach(input => {
-        input.addEventListener("focus", () => {
-            errorMessages.innerHTML = "";
-        });
     });
 });
