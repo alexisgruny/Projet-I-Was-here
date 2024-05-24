@@ -119,4 +119,16 @@ class user extends database
             $formErrorModify['modify'] = 'une erreur dans le processus de modification';
         }
     }
+
+    public function userDelete() {
+        // Prépare la requête SQL qui permet de supprimer un utilisateur
+        $deleteUser = $this->db->prepare('DELETE FROM `user` WHERE `id` = :id');
+        // Remplacement des marqueurs nominatif
+        $deleteUser->bindValue(':id', $this->id, PDO::PARAM_INT);
+        // Execute la requête 
+        $deleteUser->execute();
+        return $deleteUser;
+    }
+
 }
+?>

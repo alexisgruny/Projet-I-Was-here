@@ -6,6 +6,7 @@
             <p class="">email : <?= $_SESSION['email'] ?>
             <p>
                 <a href="/controller/modifyProfil.php">Modifier profil</a>
+                <a href="/controller/deleteProfil.php">supprimer profil</a>
         </div>
     </div>
     </body>
