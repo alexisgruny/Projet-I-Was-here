@@ -25,6 +25,7 @@ if (isset($_POST['signIn'])) {
     if (count($formError) == 0) {
         // Date de creation
         $newUser->creationDate = date('Y/m/d');
+        $newUser->role = 1;
         // Validation des nouveaux mots de passe
         if ($_POST['passwordSignIn'] == $_POST['passwordSignInConfirm']) {
             if (!preg_match(REGEX_PASSWORD, $_POST['passwordSignIn'])) {

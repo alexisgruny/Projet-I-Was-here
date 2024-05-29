@@ -9,12 +9,15 @@ class user extends database
     public $password;
     public $email;
     public $creationDate;
+    public $role;
+    public $profilPicture;
+    public $description;
 
     public function newUser()
     {
         //Déclaration de la requête SQL qui permet de stocker les données d'inscription dans la base de donnée
-        $request = 'INSERT INTO `user` (`username`, `password`, `email`, `creationDate`) '
-            . 'VALUES ( :username, :password, :email, :creationDate)';
+        $request = 'INSERT INTO `users` (`username`, `password`, `email`, `creationDateUser`, `idRole`) '
+            . 'VALUES ( :username, :password, :email, :creationDate, :role)';
         // Préparation de la requête SQL pour éviter les injections SQL
         $newUser = $this->db->prepare($request);
         // Remplacement des marqueurs nominatif
@@ -22,6 +25,7 @@ class user extends database
         $newUser->bindValue(':password', $this->password, PDO::PARAM_STR);
         $newUser->bindValue(':email', $this->email, PDO::PARAM_STR);
         $newUser->bindValue(':creationDate', $this->creationDate, PDO::PARAM_STR);
+        $newUser->bindValue(':role', $this->role, PDO::PARAM_STR);
         // Si la requête c'est éxécuté on termine la fonction 
         if ($newUser->execute()) {
             return;
@@ -34,7 +38,7 @@ class user extends database
 
     public function checkIfUserExist()
     {
-        $request = 'SELECT COUNT(`id`) AS `count` FROM `user`'
+        $request = 'SELECT COUNT(`id`) AS `count` FROM `users`'
             . ' WHERE `username` = :username OR `email` = :email';
         $check = $this->db->prepare($request);
         $check->bindValue(':username', $this->username, PDO::PARAM_STR);
@@ -52,7 +56,7 @@ class user extends database
 
     public function showUser()
     {
-        $request = 'SELECT `user`.`id`, `user`.`username`, `user`.`email` '
+        $request = 'SELECT `users`.`id`, `users`.`username`, `users`.`email` '
             . 'FROM `user` ';
         $showUser = $this->db->prepare($request);
         if ($showUser->execute()) {
@@ -62,9 +66,9 @@ class user extends database
 
     public function userById()
     {
-        $request = 'SELECT `user`.`id`, `user`.`username`, `user`.`email`, `user`.`password` '
-            . 'FROM `user` '
-            . 'WHERE `user`.`id` = :id ';
+        $request = 'SELECT `users`.`id`, `users`.`username`, `users`.`email`, `users`.`password` '
+            . 'FROM `users` '
+            . 'WHERE `users`.`id` = :id ';
         $userId = $this->db->prepare($request);
         $userId->bindValue(':id', $this->id, PDO::PARAM_INT);
         $userId->execute();
@@ -79,9 +83,9 @@ class user extends database
     public function userConnection()
     {
         $state = false;
-        $request = 'SELECT `user`.`id`, `user`.`username`, `user`.`password`, `user`.`email` '
-            . 'FROM `user` '
-            . 'WHERE `user`.`username` = :username';
+        $request = 'SELECT `users`.`id`, `users`.`username`, `users`.`password`, `users`.`email` '
+            . 'FROM `users` '
+            . 'WHERE `users`.`username` = :username';
         $result = $this->db->prepare($request);
         $result->bindValue(':username', $this->username, PDO::PARAM_STR);
         if ($result->execute()) {
@@ -101,7 +105,7 @@ class user extends database
 
     public function modifyUser() {
         //Déclaration de la requête SQL qui permet de modifier un utilisateur
-        $request = 'UPDATE `user` '
+        $request = 'UPDATE `users` '
                 . 'SET `username` = :username, `password` = :password, `email` = :email '
                 . 'WHERE `id` = :id ';
         // Prépare la requéte SQL pour éviter les injections 
@@ -122,7 +126,7 @@ class user extends database
 
     public function userDelete() {
         // Prépare la requête SQL qui permet de supprimer un utilisateur
-        $deleteUser = $this->db->prepare('DELETE FROM `user` WHERE `id` = :id');
+        $deleteUser = $this->db->prepare('DELETE FROM `users` WHERE `id` = :id');
         // Remplacement des marqueurs nominatif
         $deleteUser->bindValue(':id', $this->id, PDO::PARAM_INT);
         // Execute la requête 
