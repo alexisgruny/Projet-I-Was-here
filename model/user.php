@@ -38,7 +38,7 @@ class user extends database
 
     public function checkIfUserExist()
     {
-        $request = 'SELECT COUNT(`id`) AS `count` FROM `users`'
+        $request = 'SELECT COUNT(`idUser`) AS `count` FROM `users`'
             . ' WHERE `username` = :username OR `email` = :email';
         $check = $this->db->prepare($request);
         $check->bindValue(':username', $this->username, PDO::PARAM_STR);
@@ -56,7 +56,7 @@ class user extends database
 
     public function showUser()
     {
-        $request = 'SELECT `users`.`id`, `users`.`username`, `users`.`email` '
+        $request = 'SELECT `users`.`idUser`, `users`.`username`, `users`.`email` '
             . 'FROM `user` ';
         $showUser = $this->db->prepare($request);
         if ($showUser->execute()) {
@@ -66,9 +66,9 @@ class user extends database
 
     public function userById()
     {
-        $request = 'SELECT `users`.`id`, `users`.`username`, `users`.`email`, `users`.`password` '
+        $request = 'SELECT `users`.`idUser`, `users`.`username`, `users`.`email`, `users`.`password` '
             . 'FROM `users` '
-            . 'WHERE `users`.`id` = :id ';
+            . 'WHERE `users`.`idUser` = :id ';
         $userId = $this->db->prepare($request);
         $userId->bindValue(':id', $this->id, PDO::PARAM_INT);
         $userId->execute();
@@ -83,7 +83,7 @@ class user extends database
     public function userConnection()
     {
         $state = false;
-        $request = 'SELECT `users`.`id`, `users`.`username`, `users`.`password`, `users`.`email` '
+        $request = 'SELECT `users`.`idUser`, `users`.`username`, `users`.`password`, `users`.`email` '
             . 'FROM `users` '
             . 'WHERE `users`.`username` = :username';
         $result = $this->db->prepare($request);
@@ -107,7 +107,7 @@ class user extends database
         //Déclaration de la requête SQL qui permet de modifier un utilisateur
         $request = 'UPDATE `users` '
                 . 'SET `username` = :username, `password` = :password, `email` = :email '
-                . 'WHERE `id` = :id ';
+                . 'WHERE `id` = :idUser ';
         // Prépare la requéte SQL pour éviter les injections 
         $modify = $this->db->prepare($request);
         // Remplacement des marqueurs nominatif
@@ -126,7 +126,7 @@ class user extends database
 
     public function userDelete() {
         // Prépare la requête SQL qui permet de supprimer un utilisateur
-        $deleteUser = $this->db->prepare('DELETE FROM `users` WHERE `id` = :id');
+        $deleteUser = $this->db->prepare('DELETE FROM `users` WHERE `id` = :idUser');
         // Remplacement des marqueurs nominatif
         $deleteUser->bindValue(':id', $this->id, PDO::PARAM_INT);
         // Execute la requête 
