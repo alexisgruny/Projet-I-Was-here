@@ -19,10 +19,10 @@ if (isset($_POST['modify'])) {
     // Vérification du mot de passe actuel
     if (password_verify($_POST['oldPassword'], $getPassword->password)) {
         // Validation des champs du formulaire
-        $form = ['usernameModify', 'newPassword', 'passwordConfirm', 'emailModify'];
-        foreach ($form as $from) {
-            if (empty($_POST[$form])) {
-                $formError[$form] = 'Champs vide';
+        $field = ['usernameModify', 'newPassword', 'passwordConfirm', 'emailModify'];
+        foreach ($field as $field){
+            if (empty($_POST[$field])) {
+                $formError[$field] = 'Champs vide';
             }
         }
 

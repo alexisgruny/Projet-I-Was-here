@@ -96,7 +96,7 @@ class user extends database
                 $this->username = $selectResult->username;
                 $this->password = $selectResult->password;
                 $this->email = $selectResult->email;
-                $this->id = $selectResult->id;
+                $this->id = $selectResult->idUser;
                 $state = true;
             }
         }
@@ -107,7 +107,7 @@ class user extends database
         //Déclaration de la requête SQL qui permet de modifier un utilisateur
         $request = 'UPDATE `users` '
                 . 'SET `username` = :username, `password` = :password, `email` = :email '
-                . 'WHERE `id` = :idUser ';
+                . 'WHERE `idUser` = :id ';
         // Prépare la requéte SQL pour éviter les injections 
         $modify = $this->db->prepare($request);
         // Remplacement des marqueurs nominatif
