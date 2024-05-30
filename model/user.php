@@ -11,7 +11,7 @@ class user extends database
     public $creationDate;
     public $role;
     public $profilPicture;
-    public $description;
+    public $profilDescription;
 
     public function newUser()
     {
@@ -83,7 +83,7 @@ class user extends database
     public function userConnection()
     {
         $state = false;
-        $request = 'SELECT `users`.`idUser`, `users`.`username`, `users`.`password`, `users`.`email` '
+        $request = 'SELECT `users`.`idUser`, `users`.`username`, `users`.`password`, `users`.`email`, `users`.`profilPicture`, `users`.`profilDescription`  '
             . 'FROM `users` '
             . 'WHERE `users`.`username` = :username';
         $result = $this->db->prepare($request);
@@ -97,26 +97,29 @@ class user extends database
                 $this->password = $selectResult->password;
                 $this->email = $selectResult->email;
                 $this->id = $selectResult->idUser;
+                $this->profilPicture = $selectResult->profilPicture;
+                $this->profilDescription = $selectResult->profilDescription;
                 $state = true;
             }
         }
         return $state;
     }
 
-    public function modifyUser() {
+    public function modifyUser()
+    {
         //Déclaration de la requête SQL qui permet de modifier un utilisateur
         $request = 'UPDATE `users` '
-                . 'SET `username` = :username, `password` = :password, `email` = :email '
-                . 'WHERE `idUser` = :id ';
+            . 'SET `username` = :username, `password` = :password, `email` = :email '
+            . 'WHERE `idUser` = :id ';
         // Prépare la requéte SQL pour éviter les injections 
-        $modify = $this->db->prepare($request);
+        $modifyUser = $this->db->prepare($request);
         // Remplacement des marqueurs nominatif
-        $modify->bindValue(':username', $this->username);
-        $modify->bindValue(':password', $this->password);
-        $modify->bindValue(':email', $this->email);
-        $modify->bindValue(':id', $this->id);
+        $modifyUser->bindValue(':username', $this->username);
+        $modifyUser->bindValue(':password', $this->password);
+        $modifyUser->bindValue(':email', $this->email);
+        $modifyUser->bindValue(':id', $this->id);
         // Execution de la requête 
-        if ($modify->execute()) {
+        if ($modifyUser->execute()) {
             return;
         } else {
             // Si la requête ne c'est pas éxécuté on stock un message d'érreur dans le tableau d'érreur pour informer l'utilisateur
@@ -124,9 +127,10 @@ class user extends database
         }
     }
 
-    public function userDelete() {
+    public function userDelete()
+    {
         // Prépare la requête SQL qui permet de supprimer un utilisateur
-        $deleteUser = $this->db->prepare('DELETE FROM `users` WHERE `id` = :idUser');
+        $deleteUser = $this->db->prepare('DELETE FROM `users` WHERE `idUser` = :id');
         // Remplacement des marqueurs nominatif
         $deleteUser->bindValue(':id', $this->id, PDO::PARAM_INT);
         // Execute la requête 
@@ -134,5 +138,29 @@ class user extends database
         return $deleteUser;
     }
 
+    public function modifyDescription()
+    {
+        $request = 'UPDATE `users` '
+            . 'SET `profilDescription` = :profilDescription '
+            . 'WHERE `idUser` = :id ';
+        $modifyDescription = $this->db->prepare($request);
+        $modifyDescription->bindValue(':id', $this->id);
+        $modifyDescription->bindValue(':profilDescription', $this->profilDescription);
+        if ($modifyDescription->execute()) {
+            $_SESSION['profilDescription'] = $this->profilDescription;
+            return;
+        } else {
+            // Si la requête ne c'est pas éxécuté on stock un message d'érreur dans le tableau d'érreur pour informer l'utilisateur
+            $formErrorModify['modifyDescription'] = 'une erreur dans le processus de modification';
+        }
+    }
+
+    public function deleteDescription()
+    {
+        $deleteDescritpion = $this->db->prepare('DELETE `profilDescription` FROM `users` WHERE `idUser` = :id');
+        $deleteDescritpion->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $deleteDescritpion->execute();
+        return $deleteDescritpion;
+    }
 }
 ?>
