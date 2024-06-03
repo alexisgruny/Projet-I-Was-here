@@ -17,4 +17,5 @@ if (isset($_POST['submitDescription'])) {
     }
 }
 require('../view/profilDescriptionForm.php');
+require('../view/footer.php');
 ?>
