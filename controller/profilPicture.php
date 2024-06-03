@@ -1,6 +1,6 @@
 <?php
 require('../model/database.php');
-require('../model/user.php');
+require('../model/picture.php');
 require('../view/header.php');
 require('../view/navbar.php');
 
@@ -14,10 +14,9 @@ if (isset($_POST['submit']) && isset($_FILES['profilePicture'])) {
     // Vérifiez si le fichier est une image réelle ou une fausse image
     $check = getimagesize($_FILES["profilePicture"]["tmp_name"]);
     if ($check !== false) {
-        echo "Le fichier est une image - " . $check["mime"] . ".";
         $uploadOk = 1;
     } else {
-        echo "Le fichier n'est pas une image.";
+        $formError['picture'] = 'erreur1';
         $uploadOk = 0;
     }
 
@@ -29,22 +28,22 @@ if (isset($_POST['submit']) && isset($_FILES['profilePicture'])) {
 
     // Limitez la taille du fichier (par exemple, à 500 Ko)
     if ($_FILES["profilePicture"]["size"] > 500000) {
-        echo "Désolé, votre fichier est trop volumineux.";
+        $formError['picture'] = 'erreur2';
         $uploadOk = 0;
     }
 
     // Vérifiez si $uploadOk est défini à 0 par une erreur
     if ($uploadOk == 0) {
-        echo "Désolé, votre fichier n'a pas été téléchargé.";
+        $formError['picture'] = 'erreur3';
         // Si tout est OK, essayez de télécharger le fichier
     } else {
         if (move_uploaded_file($_FILES["profilePicture"]["tmp_name"], $target_file)) {
             $upload->target_file = $target_file;
-            $upload->profilPicture = $profilPicure;
+            $upload->picture = $_FILES["profilePicture"];
             $upload->uploadPicture();
             echo "Le fichier " . htmlspecialchars(basename($_FILES["profilePicture"]["name"])) . " a été téléchargé.";
         } else {
-            $formError['picture'] = 'erreur';
+            $formError['picture'] = 'erreur4';
         }
     }
 }

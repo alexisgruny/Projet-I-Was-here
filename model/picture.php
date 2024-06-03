@@ -4,12 +4,13 @@
 class picture extends database
 {
     public $target_file;
-    public $profilPicture;
+    public $picture;
+
     function uploadPicture(){
         $request= "INSERT INTO users (:profilePicture) VALUES (':target')";
         $uploadPicture = $this->db->prepare($request);
         $uploadPicture->bindValue(':target', $this->target_file, PDO::PARAM_STR);
-        $uploadPicture->bindValue(':profilPicture', $this->profilPicture, PDO::PARAM_STR);
+        $uploadPicture->bindValue(':profilePicture', $this->picture, PDO::PARAM_STR);
         if ($uploadPicture->execute()) {
             return;
             echo 'execute';
