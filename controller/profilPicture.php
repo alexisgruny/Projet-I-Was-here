@@ -1,15 +1,18 @@
 <?php
+session_start();
 require('../model/database.php');
-require('../model/picture.php');
+require('../model/user.php');
 require('../view/header.php');
 require('../view/navbar.php');
 
 if (isset($_POST['submit']) && isset($_FILES['profilePicture'])) {
 
-    $upload = new picture();
-    $target_file = "uploads/" . basename($_FILES["profilePicture"]["name"]);
+    $uploadPicture = new user();
+    $target_file = "../assets/img/uploads/" . basename($_FILES["profilePicture"]["name"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $profilPicture = "../assets/img/uploads/" . $_SESSION['username'].'.'.$imageFileType;
+
 
     // Vérifiez si le fichier est une image réelle ou une fausse image
     $check = getimagesize($_FILES["profilePicture"]["tmp_name"]);
@@ -27,7 +30,7 @@ if (isset($_POST['submit']) && isset($_FILES['profilePicture'])) {
     }
 
     // Limitez la taille du fichier (par exemple, à 500 Ko)
-    if ($_FILES["profilePicture"]["size"] > 500000) {
+    if ($_FILES["profilePicture"]["size"] > 5000000) {
         $formError['picture'] = 'erreur2';
         $uploadOk = 0;
     }
@@ -37,10 +40,10 @@ if (isset($_POST['submit']) && isset($_FILES['profilePicture'])) {
         $formError['picture'] = 'erreur3';
         // Si tout est OK, essayez de télécharger le fichier
     } else {
-        if (move_uploaded_file($_FILES["profilePicture"]["tmp_name"], $target_file)) {
-            $upload->target_file = $target_file;
-            $upload->picture = $_FILES["profilePicture"];
-            $upload->uploadPicture();
+        if (move_uploaded_file($_FILES["profilePicture"]["tmp_name"], $profilPicture)) {
+            $uploadPicture->profilPicture = $profilPicture;
+            $uploadPicture->id = $_SESSION['id'];
+            $uploadPicture->uploadPicture();
             echo "Le fichier " . htmlspecialchars(basename($_FILES["profilePicture"]["name"])) . " a été téléchargé.";
         } else {
             $formError['picture'] = 'erreur4';

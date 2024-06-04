@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="">
-            <img />
+            <img src="<?= $_SESSION['profilPicture'] ?>"/>
             <h1 class="">Profil</h1>
             <p class="">Nom d'utilisateur : <?= $_SESSION['username'] ?></p>
             <p class="">email : <?= $_SESSION['email'] ?></p>

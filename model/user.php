@@ -162,5 +162,21 @@ class user extends database
         $deleteDescritpion->execute();
         return $deleteDescritpion;
     }
+
+    function uploadPicture()
+    {
+        $request = 'UPDATE `users` '
+            . 'SET `profilPicture` = :profilPicture '
+            . 'WHERE `idUser` = :id ';
+        $uploadPicture = $this->db->prepare($request);
+        $uploadPicture->bindValue(':profilPicture', $this->profilPicture, PDO::PARAM_STR);
+        $uploadPicture->bindValue(':id', $this->id, PDO::PARAM_STR);
+        if ($uploadPicture->execute()) {
+            $_SESSION['profilPicture'] = $this->profilPicture;
+            echo 'execute';
+        } else {
+            // Si la requête ne c'est pas éxécuté on stock un message d'érreur dans le tableau d'érreur pour informer l'utilisateur
+            $formErrorSignIn['execute'] = 'une erreur dans le processus d\'inscription';
+        }
+    }
 }
-?>

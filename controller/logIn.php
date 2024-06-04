@@ -29,7 +29,7 @@ if (isset($_POST['logIn'])) {
                 $_SESSION['email'] = $user->email;
                 $_SESSION['isConnect'] = true;
                 $_SESSION['profilDescription'] = $user->profilDescription;
-                $_Session['profilPicture'] = $user->profilPicture;
+                $_SESSION['profilPicture'] = $user->profilPicture;
                 // Redirection sur la page du profil de l'utilisateur
                 header('location: ../controller/profil.php');
             } else {
